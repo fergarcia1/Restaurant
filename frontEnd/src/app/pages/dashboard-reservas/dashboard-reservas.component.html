@@ -1,0 +1,18 @@
+<h2>Reservas pendientes</h2>
+<p *ngIf="msg">{{ msg }}</p>
+<table *ngIf="reservas.length">
+  <thead><tr><th>Fecha/Hora</th><th>Cliente</th><th>Personas</th><th>Acciones</th></tr></thead>
+  <tbody>
+    <tr *ngFor="let r of reservas">
+      <td>{{ r.reservation_datetime | date:'short' }}</td>
+      <td>{{ r.apellido }}, {{ r.nombre }} ({{ r.email }})</td>
+      <td>{{ r.cantidad_personas }}</td>
+      <td>
+        <button (click)="confirmar(r.id!)">Confirmar</button>
+        <button (click)="cancelar(r.id!)">Cancelar</button>
+        <button (click)="eliminar(r.id!)">Eliminar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p *ngIf="!reservas.length">No hay reservas pendientes</p>

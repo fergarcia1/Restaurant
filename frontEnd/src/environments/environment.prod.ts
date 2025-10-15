@@ -1,0 +1,1 @@
+export const environment = { apiBase: 'https://TU-API-PROD.com' }; /// una vez que despleguemos la pagina vamos a tener la URL
