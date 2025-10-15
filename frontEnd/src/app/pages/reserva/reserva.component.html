@@ -1,12 +1,15 @@
-<h2>Hacer una reserva</h2>
-<form [formGroup]="form" (ngSubmit)="submit()">
-  <input placeholder="Nombre" formControlName="nombre">
-  <input placeholder="Apellido" formControlName="apellido">
-  <input type="email" placeholder="Email" formControlName="email">
-  <input type="tel" placeholder="Teléfono" formControlName="telefono">
-  <input type="datetime-local" formControlName="reservation_datetime">
-  <input type="number" min="1" max="12" formControlName="cantidad_personas">
-  <label><input type="checkbox" formControlName="acepta_novedades"> Quiero novedades</label>
-  <button type="submit" [disabled]="form.invalid">Reservar</button>
-</form>
-<p>{{ msg }}</p>
+<div class="card">
+  <h1>Nombre del restaurante</h1>
+  <h2>Hacer una reserva</h2>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <input placeholder="Nombre" formControlName="nombre">
+    <input placeholder="Apellido" formControlName="apellido">
+    <input type="email" placeholder="Email" formControlName="email">
+    <input type="tel" placeholder="Teléfono" formControlName="telefono">
+    <input type="datetime-local" formControlName="reservation_datetime">
+    <input type="number" min="1" max="12" formControlName="cantidad_personas">
+    <label><input type="checkbox" formControlName="acepta_novedades"> Quiero novedades</label>
+    <button type="submit" [disabled]="form.invalid">Reservar</button>
+  </form>
+  <p>{{ msg }}</p>
+</div>

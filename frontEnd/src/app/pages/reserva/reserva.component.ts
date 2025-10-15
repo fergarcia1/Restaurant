@@ -7,6 +7,7 @@ import { ReservasService } from '../../core/services/reservas.service';
 @Component({
   selector: 'app-reserva',
   templateUrl: './reserva.component.html',
+  styleUrls: ['./reserva.component.css'],
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, FormsModule]
 })
