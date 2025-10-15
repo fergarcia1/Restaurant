@@ -6,12 +6,16 @@ import { ReservasService } from '../../core/services/reservas.service';
 
 @Component({
   selector: 'app-reserva',
-  templateUrl: './reserva.component.html',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule]
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  templateUrl: './reserva.component.html',
+  styleUrls: ['./reserva.component.css']
 })
 export class ReservaComponent {
-  msg = '';
+  // ✅ props (una sola vez)
+  msg: string = '';
+  msgType: 'success' | 'error' | '' = '';
+  loading = false;
   form!: FormGroup;
 
   constructor(private fb: FormBuilder, private api: ReservasService) {
@@ -25,15 +29,16 @@ export class ReservaComponent {
       cantidad_personas: [2, [Validators.required, Validators.min(1), Validators.max(12)]],
     });
   }
+
   submit() {
-    if (this.form.invalid) { this.msg = 'Revisá los campos.'; return; }
+    if (this.form.invalid) { this.msg = 'Revisá los campos.'; this.msgType = 'error'; return; }
+    this.loading = true;
 
     const v = this.form.getRawValue() as any;
-    // datetime-local -> MySQL DATETIME (YYYY-MM-DD HH:mm:ss)
     const dt = new Date(v.reservation_datetime);
     const reservation_datetime = isNaN(+dt)
       ? v.reservation_datetime
-      : dt.toISOString().slice(0, 19).replace('T', ' ');
+      : dt.toISOString().slice(0,19).replace('T',' ');
 
     const payload = {
       email: v.email,
@@ -45,23 +50,23 @@ export class ReservaComponent {
       reservation_datetime
     };
 
-    console.log(payload);
-    
-
     this.api.crearReserva(payload).subscribe({
       next: () => {
-        this.msg = 'Reserva enviada.';
+        this.msg = '✅ ¡Reserva creada con éxito! Te contactaremos para confirmar.';
+        this.msgType = 'success';
         this.form.reset({ cantidad_personas: 2, acepta_novedades: false });
+        setTimeout(() => { this.msg = ''; this.msgType = ''; }, 4000);
       },
       error: (e) => {
-        const z = e?.error?.error; // objeto del flatten de Zod
+        const z = e?.error?.error;
         const first =
-          (z?.fieldErrors && Object.values(z.fieldErrors).flat()[0]) ||
-          e?.error?.message ||
-          `Error ${e.status || ''} creando la reserva`;
-        this.msg = first;
+          (z?.fieldErrors && (Object.values(z.fieldErrors).flat()[0] as string)) ||
+          e?.error?.message || `Error ${e.status || ''} creando la reserva`;
+        this.msg = `❌ ${first}`;
+        this.msgType = 'error';
         console.error('POST /api/reservas error:', e);
-      }
+      },
+      complete: () => this.loading = false
     });
   }
 }
