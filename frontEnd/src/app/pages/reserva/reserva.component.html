@@ -1,6 +1,8 @@
-<div class="card">
-  <h1>Nombre del restaurante</h1>
-  <h2>Hacer una reserva</h2>
+
+<h2>Hacer una reserva</h2>
+<div *ngIf="msg" class="alert" [class.alert-success]="msgType==='success'" [class.alert-error]="msgType==='error'">
+  {{ msg }}
+</div>
   <form [formGroup]="form" (ngSubmit)="submit()">
     <input placeholder="Nombre" formControlName="nombre">
     <input placeholder="Apellido" formControlName="apellido">
@@ -9,7 +11,8 @@
     <input type="datetime-local" formControlName="reservation_datetime">
     <input type="number" min="1" max="12" formControlName="cantidad_personas">
     <label><input type="checkbox" formControlName="acepta_novedades"> Quiero novedades</label>
-    <button type="submit" [disabled]="form.invalid">Reservar</button>
+    <button type="submit" [disabled]="form.invalid || loading">
+  {{ loading ? 'Enviando...' : 'Reservar' }}
+</button>
   </form>
   <p>{{ msg }}</p>
-</div>

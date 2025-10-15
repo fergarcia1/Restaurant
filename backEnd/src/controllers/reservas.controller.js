@@ -9,7 +9,16 @@ export async function crearReserva(req, res) {
   const conn = await pool.getConnection();
   try {
     await conn.beginTransaction();
+    
+    console.log("🟦 Datos recibidos:", data);
 
+try {
+  await conn.beginTransaction();
+  console.log("🟩 Iniciando transacción...");
+}
+catch{
+  console.error("🟥 ERROR EN crearReserva:", err);
+}
     // Upsert cliente por email
     const [r1] = await conn.execute(
       `INSERT INTO clientes (email, nombre, apellido, telefono, acepta_novedades)
@@ -25,11 +34,14 @@ export async function crearReserva(req, res) {
     const clienteId = r1.insertId;
 
     // Crear reserva con snapshot opcional
-    await conn.execute(
-      `INSERT INTO reservas (cliente_id, reservation_datetime, cantidad_personas, status)
-   VALUES (?, ?, ?, 'pendiente')`,
-      [clienteId, data.reservation_datetime, data.cantidad_personas]
-    );
+   await conn.execute(
+  `INSERT INTO reservas (
+     cliente_id, reservation_datetime, cantidad_personas, status,
+     email_snapshot, telefono_snapshot
+   )
+   VALUES (?, ?, ?, 'pendiente', ?, ?)`,
+  [clienteId, data.reservation_datetime, data.cantidad_personas, data.email, data.telefono]
+);
 
     await conn.commit();
     res.status(201).json({ ok: true });
