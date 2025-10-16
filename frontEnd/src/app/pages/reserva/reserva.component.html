@@ -1,12 +1,11 @@
 <div class="form-container" style="max-width: 480px;">
 
   <h1 class="title">Nombre del restaurante</h1>
-  <p>Complete el siguiente formulario para realizar su reserva.</p>
+  <p class="completeElForm">Complete el formulario para realizar su reserva.</p>
   <div *ngIf="msg" class="alert" [class.alert-success]="msgType==='success'" [class.alert-error]="msgType==='error'">
     {{ msg }}
   </div>
   <form [formGroup]="form" (ngSubmit)="submit()">
-
     <div class="mb-2">
             <label for="nombre" class="form-label">Nombre:</label>
             <input id="nombre" type="text" class="form-control" formControlName="nombre" placeholder="Ej: María José">
@@ -17,11 +16,11 @@
     </div>
     <div class="mb-2">
         <label for="email" class="form-label">Email:</label>
-        <input id="email" type="email" class="form-control" formControlName="email" placeholder="Ej: maria@example.com">
+        <input id="email" type="email" class="form-control" formControlName="email" placeholder="Ej: maria@ejemplo.com">
     </div>
     <div class="mb-2">
         <label for="telefono" class="form-label">Teléfono:</label>
-        <input id="telefono" type="tel" class="form-control" formControlName="telefono" placeholder="Ej: 123456789">
+        <input id="telefono" type="tel" class="form-control" formControlName="telefono" placeholder="Ej: 2234554879">
     </div>
     <div class="mb-2">
         <label for="reservation_datetime" class="form-label">Fecha y hora de la reserva:</label>
@@ -33,10 +32,10 @@
     </div>
     <div class="mb-2 form-check">
         <input id="acepta_novedades" type="checkbox" class="form-check-input" formControlName="acepta_novedades">
-        <label for="acepta_novedades" class="form-check-label">Quiero novedades</label>
+        <label for="acepta_novedades" class="form-check-label">Quiero recibir novedades</label>
     </div>
-    <button type="submit" [disabled]="form.invalid || loading">
-    {{ loading ? 'Enviando...' : 'Reservar' }}
+    <button type="submit" class="btn btn-primary w-100" [disabled]="form.invalid || loading">
+    {{ loading ? 'Enviando...' : 'Confirmar Reserva' }}
   </button>
   </form>
   <p>{{ msg }}</p>
