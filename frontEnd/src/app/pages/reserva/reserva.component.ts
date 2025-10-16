@@ -38,7 +38,7 @@ export class ReservaComponent {
     const dt = new Date(v.reservation_datetime);
     const reservation_datetime = isNaN(+dt)
       ? v.reservation_datetime
-      : dt.toISOString().slice(0,19).replace('T',' ');
+      : dt.toISOString().slice(0, 19).replace('T', ' ');
 
     const payload = {
       email: v.email,
@@ -58,6 +58,9 @@ export class ReservaComponent {
         setTimeout(() => { this.msg = ''; this.msgType = ''; }, 4000);
       },
       error: (e) => {
+        console.error('HTTP', e.status, e.statusText);
+        console.log('URL:', e.url);
+        console.log('Server body:', e.error);
         const z = e?.error?.error;
         const first =
           (z?.fieldErrors && (Object.values(z.fieldErrors).flat()[0] as string)) ||

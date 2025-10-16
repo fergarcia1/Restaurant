@@ -1,17 +1,43 @@
-<h2>Hacer una reserva</h2>
-<div *ngIf="msg" class="alert" [class.alert-success]="msgType==='success'" [class.alert-error]="msgType==='error'">
-  {{ msg }}
+<div class="form-container" style="max-width: 480px;">
+
+  <h1 class="title">Nombre del restaurante</h1>
+  <p>Complete el siguiente formulario para realizar su reserva.</p>
+  <div *ngIf="msg" class="alert" [class.alert-success]="msgType==='success'" [class.alert-error]="msgType==='error'">
+    {{ msg }}
+  </div>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+
+    <div class="mb-2">
+            <label for="nombre" class="form-label">Nombre:</label>
+            <input id="nombre" type="text" class="form-control" formControlName="nombre" placeholder="Ej: María José">
+        </div>
+    <div class="mb-2">
+        <label for="apellido" class="form-label">Apellido:</label>
+        <input id="apellido" type="text" class="form-control" formControlName="apellido" placeholder="Ej: Pérez">
+    </div>
+    <div class="mb-2">
+        <label for="email" class="form-label">Email:</label>
+        <input id="email" type="email" class="form-control" formControlName="email" placeholder="Ej: maria@example.com">
+    </div>
+    <div class="mb-2">
+        <label for="telefono" class="form-label">Teléfono:</label>
+        <input id="telefono" type="tel" class="form-control" formControlName="telefono" placeholder="Ej: 123456789">
+    </div>
+    <div class="mb-2">
+        <label for="reservation_datetime" class="form-label">Fecha y hora de la reserva:</label>
+        <input id="reservation_datetime" type="datetime-local" class="form-control" formControlName="reservation_datetime">
+    </div>
+    <div class="mb-2">
+        <label for="cantidad_personas" class="form-label">Cantidad de personas:</label>
+        <input id="cantidad_personas" type="number" min="1" max="12" class="form-control" formControlName="cantidad_personas">
+    </div>
+    <div class="mb-2 form-check">
+        <input id="acepta_novedades" type="checkbox" class="form-check-input" formControlName="acepta_novedades">
+        <label for="acepta_novedades" class="form-check-label">Quiero novedades</label>
+    </div>
+    <button type="submit" [disabled]="form.invalid || loading">
+    {{ loading ? 'Enviando...' : 'Reservar' }}
+  </button>
+  </form>
+  <p>{{ msg }}</p>
 </div>
-<form [formGroup]="form" (ngSubmit)="submit()">
-  <input placeholder="Nombre" formControlName="nombre">
-  <input placeholder="Apellido" formControlName="apellido">
-  <input type="email" placeholder="Email" formControlName="email">
-  <input type="tel" placeholder="Teléfono" formControlName="telefono">
-  <input type="datetime-local" formControlName="reservation_datetime">
-  <input type="number" min="1" max="12" formControlName="cantidad_personas">
-  <label><input type="checkbox" formControlName="acepta_novedades"> Quiero novedades</label>
-  <button type="submit" [disabled]="form.invalid || loading">
-  {{ loading ? 'Enviando...' : 'Reservar' }}
-</button>
-</form>
-<p>{{ msg }}</p>
